@@ -20,6 +20,8 @@ app.post('/api/message',checkAuthenticated, message.post);
 
 app.post('/auth/register', auth.register);
 
+app.post('/auth/login', auth.login);
+
 //Connection
 mongoose.connect("mongodb://localhost:27017/test", function (err, db) {
     if (!err) {
