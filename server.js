@@ -1,3 +1,5 @@
+var http = require('http');
+var path = require('path');
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
@@ -29,6 +31,17 @@ mongoose.connect("mongodb://localhost:27017/test", function (err, db) {
     }
 })
 
-var server = app.listen(5000, function () {
-    console.log('listening on port ', server.address().port)
-})
+var server = http.createServer(app);
+var io = require('socket.io')(server);
+io.on('connection', function (socket) {
+    socket.emit('msg', { msg: 'Welcome skuli!' });
+    socket.on('msg',function(msg){
+    	socket.emit('msg', { msg: "you sent : "+msg });
+    })
+});
+
+server.listen(5000);
+
+// var server = app.listen(5000, function () {
+//     console.log('listening on port ', server.address().port)
+// })
